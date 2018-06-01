@@ -28,4 +28,5 @@ def get_orders_by_customer(cst_name, shipped=None, details=False):
     return result
 
 
-print(get_orders_by_customer('cookiemon'))
+if __name__ == "__main__":
+    print(get_orders_by_customer('cookiemon'))
