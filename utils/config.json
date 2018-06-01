@@ -1,3 +1,13 @@
 {
-
+  "db": {
+    "hostname": "XXX",
+    "port": "XXX",
+    "user": "XXX",
+    "password": "XXX",
+    "database": "XXX",
+    "schema": "practice"
+  },
+  "date": {
+    "format": "%Y-%m-%d %H:%M:%S"
+  }
 }
