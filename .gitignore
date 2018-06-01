@@ -114,3 +114,6 @@ pip-selfcheck.json
 
 # Chalice
 *deployments/
+
+# Config file
+*/config.json
