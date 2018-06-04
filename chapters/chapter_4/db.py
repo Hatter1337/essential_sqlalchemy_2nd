@@ -7,6 +7,14 @@ from sqlalchemy.sql import insert
 
 from utils import config
 
+CONNECTION_STR = "mssql+pymssql://%s:%s@%s:%s/%s" % (
+    config['db']['user'],
+    config['db']['password'],
+    config['db']['hostname'],
+    config['db']['port'],
+    config['db']['database']
+)
+
 
 class DataAccessLayer:
     connection = None
@@ -41,7 +49,7 @@ class DataAccessLayer:
 
     orders = Table(
         'orders', metadata,
-        Column('order_id', Integer(), primary_key=True),
+        Column('order_id', String(6), primary_key=True),
         Column('user_id', ForeignKey('users.user_id')),
         Column('shipped', Boolean(), default=False)
     )
@@ -141,12 +149,12 @@ def prep_db():
             'cookie_id': 1,
             'quantity': 24,
             'extended_cost': 12.00
-        },
-        {
-            'order_id': 'ol001',
-            'cookie_id': 4,
-            'quantity': 6,
-            'extended_cost': 6.00
-        }
+        }  # ,
+        # {
+        #     'order_id': 'ol001',
+        #     'cookie_id': 4,
+        #     'quantity': 6,
+        #     'extended_cost': 6.00
+        # }
     ]
     dal.connection.execute(ins, order_items)

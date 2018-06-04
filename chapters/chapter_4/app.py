@@ -1,14 +1,8 @@
-from chapters.chapter_4.db import dal
+from chapters.chapter_4.db import dal, CONNECTION_STR
 from sqlalchemy.sql import select
 
-from utils import config
 
-dal.db_init("mssql+pymssql://%s:%s@%s:%s/%s" % (
-                config['db']['user'],
-                config['db']['password'],
-                config['db']['hostname'],
-                config['db']['port'],
-                config['db']['database']))
+dal.db_init(CONNECTION_STR)
 
 
 def get_orders_by_customer(cst_name, shipped=None, details=False):

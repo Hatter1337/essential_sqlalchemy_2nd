@@ -2,7 +2,7 @@ import unittest
 
 from decimal import Decimal
 
-from chapters.chapter_4.db import dal, prep_db
+from chapters.chapter_4.db import dal, prep_db, CONNECTION_STR
 from chapters.chapter_4.app import get_orders_by_customer
 
 
@@ -16,8 +16,8 @@ class TestApp(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        dal.db_init('sqlite:///:memory:')
-        prep_db()
+        dal.db_init(CONNECTION_STR)
+        # prep_db()
 
     def test_orders_by_customer_blank(self):
         results = get_orders_by_customer('')
