@@ -31,6 +31,13 @@ class Cookie(Base):
     quantity = Column(Integer())
     unit_cost = Column(Numeric(12, 2))
 
+    def __repr__(self):
+        return "Cookie(cookie_name='{self.cookie_name}', " \
+                       "cookie_recipe_url='{self.cookie_recipe_url}', " \
+                       "cookie_sku='{self.cookie_sku}', " \
+                       "quantity={self.quantity}, " \
+                       "unit_cost={self.unit_cost})".format(self=self)
+
 
 class User(Base):
     __tablename__ = 'users'
@@ -43,6 +50,12 @@ class User(Base):
     created_on = Column(DateTime(), default=datetime.now)
     updated_on = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
 
+    def __repr__(self):
+        return "User(username='{self.username}', " \
+                     "email_address='{self.email_address}', " \
+                     "phone='{self.phone}', " \
+                     "password='{self.password}')".format(self=self)
+
 
 class Order(Base):
     __tablename__ = 'orders'
@@ -52,6 +65,10 @@ class Order(Base):
     shipped = Column(Boolean(), default=False)
 
     user = relationship("User", backref=backref('orders', order_by=order_id))
+
+    def __repr__(self):
+        return "Order(user_id={self.user_id}, " \
+                      "shipped={self.shipped})".format(self=self)
 
 
 class LineItem(Base):
@@ -67,6 +84,25 @@ class LineItem(Base):
                                                   order_by=line_item_id))
 
     cookie = relationship("Cookie", uselist=False)
+
+    def __repr__(self):
+        return "LineItems(order_id={self.order_id}, " \
+                          "cookie_id={self.cookie_id}, " \
+                          "quantity={self.quantity}, " \
+                          "extended_cost={self.extended_cost})" \
+                          "".format(self=self)
+
+
+# Chapter 7
+class Employee(Base):
+    __tablename__ = 'employees'
+
+    id = Column(Integer(), primary_key=True)
+    manager_id = Column(Integer(), ForeignKey('employees.id'))
+    name = Column(String(255), nullable=False)
+
+    manager = relationship("Employee", backref=backref('reports'),
+                           remote_side=[id])
 
 
 Base.metadata.create_all(engine)
