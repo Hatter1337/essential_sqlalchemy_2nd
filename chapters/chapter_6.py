@@ -1,7 +1,7 @@
 from datetime import datetime
 from sqlalchemy import (
     create_engine, ForeignKey,
-    Column, Integer, Numeric, String, DateTime, Boolean
+    Column, Integer, Numeric, String, DateTime, Boolean, CheckConstraint
 )
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
@@ -23,6 +23,8 @@ engine = create_engine(
 
 class Cookie(Base):
     __tablename__ = 'cookies'
+    __table_args__ = (CheckConstraint(
+        'quantity >= 0', name='quantity_positive'),)
 
     cookie_id = Column(Integer(), primary_key=True)
     cookie_name = Column(String(50), index=True)
@@ -30,6 +32,14 @@ class Cookie(Base):
     cookie_sku = Column(String(55))
     quantity = Column(Integer())
     unit_cost = Column(Numeric(12, 2))
+
+    def __init__(self, name,
+                 recipe_url=None, sku=None, quantity=0, unit_cost=0.00):
+        self.cookie_name = name
+        self.cookie_recipe_url = recipe_url
+        self.cookie_sku = sku
+        self.quantity = quantity
+        self.unit_cost = unit_cost
 
     def __repr__(self):
         return "Cookie(cookie_name='{self.cookie_name}', " \
@@ -49,6 +59,12 @@ class User(Base):
     password = Column(String(25), nullable=False)
     created_on = Column(DateTime(), default=datetime.now)
     updated_on = Column(DateTime(), default=datetime.now, onupdate=datetime.now)
+
+    def __init__(self, username, email_address, phone, password):
+        self.username = username
+        self.email_address = email_address
+        self.phone = phone
+        self.password = password
 
     def __repr__(self):
         return "User(username='{self.username}', " \
