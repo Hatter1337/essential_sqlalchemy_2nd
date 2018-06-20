@@ -27,7 +27,7 @@ class Cookie(Base):
     quantity = Column(Integer())
     unit_cost = Column(Numeric(12, 2))
 
-    @property
+    @hybrid_property
     def inventory_value(self):
         return self.unit_cost * self.quantity
 
